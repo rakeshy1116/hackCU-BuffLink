@@ -16,6 +16,7 @@ def parse_event(url):
         for script in ld_json_scripts:
             # print("Script content:", script.get_text())
             data = json.loads(script.get_text())
+            print(data)
             for index_json in data:
                 print(index_json['name'])
                 print(index_json['description'])
