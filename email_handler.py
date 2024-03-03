@@ -11,10 +11,10 @@ def email_handler(user_email, hash_id_list):
         previous_mails = user_data.get('previousMails').get('L', [])
         previous_mails_list = [item.get('S') for item in previous_mails]
         new_hash_ids = []
-        print("previous_mails")
-        print(previous_mails_list)
-        print("previous_hash_ids")
-        print(previous_mails_list)
+        # print("previous_mails")
+        # print(previous_mails_list)
+        # print("previous_hash_ids")
+        # print(previous_mails_list)
         if previous_mails_list is None:
             new_hash_ids = hash_id_list
             # print("new_hash_ids")
