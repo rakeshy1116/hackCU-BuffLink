@@ -1,8 +1,8 @@
 from fetch_user_data import fetch_user_data_from_dynamo
 from fetch_event_data import fetch_event_data_from_dynamo
 from send_email import send_email_to_user
-from build_email import build_email
 from user_dynamo import *
+from build_email import build_event, build_calendar_content
 
 def email_handler(user_email, hash_id_list):
     user_data = get_user_data(user_email)
@@ -31,15 +31,20 @@ def email_handler(user_email, hash_id_list):
         events_list = fetch_event_data_from_dynamo(new_hash_ids)
 
         if len(events_list) > 0:
+            calendar_events = []
+            email_content = None
+            event_counter = 1
 
             for event in events_list:
-                
                 try:
-                    [subject, body] = build_email(user_data['userName'].get('S'), event)
-                    if subject is not None and body is not None:
-                        send_email_to_user(user_data['emailId'].get('S'), subject, body)
+                    calendar_events.append(build_event(event, event_counter))
                 except:
                     pass
+            
+            email_content, html_body = build_calendar_content(calendar_events)
+            
+            if email_content is not None:
+                send_email_to_user(user_data['emailId'].get('S'), email_content, html_body)
 
 #email_handler("yrakeshchowdary1116@gmail.com", ['4635410de53a7cb35da2807e440f1732c37bd5726977889f4ad6f49cfc342fa8aa9235c69f343c711268f6f6bbb762508a8ed7809c359ca03aad40fe6cb6b765'])
 
