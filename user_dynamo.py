@@ -34,29 +34,51 @@ def put_user_data(user_name, email, previousMails, extensionPrompts):
     except Exception as e:
         print("Error:", e)
 
-def get_events_dynamo():
+def get_specific_columns(table_name, columns):
     try:
-        # Get item from DynamoDB table
-        response = dynamodb.get_item(
-            TableName='Events',
-            Key={
-                'emailId': {'S': emailId}
-            }
+        # Initialize list to store items
+        all_items = []
+        
+        # Start scanning the table with ProjectionExpression
+        response = dynamodb.scan(
+            TableName=table_name,
+            ProjectionExpression=','.join(columns)
         )
         
-        # Check if item exists
-        if 'Item' in response:
-            user_data = response['Item']
-            # Process user data here
-            # print("User data:", user_data)
-            return user_data
-        else:
-            print("User not found")
-            return None
+        # Continue scanning if there are more items
+        while 'LastEvaluatedKey' in response:
+            all_items.extend(response['Items'])
+            response = dynamodb.scan(
+                TableName=table_name,
+                ProjectionExpression=','.join(columns),
+                ExclusiveStartKey=response['LastEvaluatedKey']
+            )
+        
+        # Add the remaining items
+        all_items.extend(response['Items'])
+        
+        return all_items
     
     except Exception as e:
         print("Error:", e)
-    return ""
+        return None
+
+
+def get_events_dynamo():
+    table_name = 'NewEvents'
+    
+    # Example list of columns to retrieve
+    columns_to_retrieve = ['hash_id', 'title', 'description']
+    
+    # Get specific columns from all items in DynamoDB table
+    items_with_specific_columns = get_specific_columns(table_name, columns_to_retrieve)
+    
+    # Print all items with specific columns
+    if items_with_specific_columns:
+        return items_with_specific_columns
+    else:
+        print("Failed to retrieve items from the DynamoDB table")
+        return []
 
 def get_user_data(emailId):
     try:
