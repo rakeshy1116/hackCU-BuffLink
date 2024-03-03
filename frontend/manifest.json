@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "CalCU",
+    "name": "BuffLink",
     "version": "1.0",
     "permissions": ["activeTab"],
     "action": {
