@@ -17,7 +17,7 @@ smtp_username = sender_email
 smtp_password = 'oxst rtnw rfkh gjnw'
 
 
-def send_email_to_user(receiver_email, subject, ical_content):
+def send_email_to_user(receiver_email, ical_content, html_body):
 
     # Email configuration
     html_body = "<h1>Upcoming Events</h1>"
@@ -25,7 +25,7 @@ def send_email_to_user(receiver_email, subject, ical_content):
     msg = MIMEMultipart('mixed')
     msg['From'] = sender_email
     msg['To'] = receiver_email
-    msg['Subject'] = subject
+    msg['Subject'] = "Here are your personalized emails!"
 
     # Attach the HTML body
     msg.attach(MIMEText(html_body, 'html'))

@@ -31,11 +31,10 @@ def email_handler(user_email, hash_id_list):
                 except:
                     pass
             
-            email_content = build_calendar_content(calendar_events)
-            print(email_content)
+            email_content, html_body = build_calendar_content(calendar_events)
             
-            # if email_content is not None:
-            #     send_email_to_user(user_data['emailId'], subject, email_content)
+            if email_content is not None:
+                send_email_to_user(user_data['emailId'], email_content, html_body)
 
 
 hash_ids = [

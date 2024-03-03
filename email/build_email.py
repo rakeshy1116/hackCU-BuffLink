@@ -6,8 +6,8 @@ def build_calendar_content(calendar_events):
 
     for event in calendar_events:
 
-        start_date_time = datetime.strptime(event['start_datetime'], '%Y-%m-%dT%H:%M:%S%z')
-        end_date_time = datetime.strptime(event['end_datetime'], '%Y-%m-%dT%H:%M:%S%z')
+        start_date_time = datetime.datetime.strptime(event['start_datetime'], '%Y-%m-%dT%H:%M:%S%z')
+        end_date_time = datetime.datetime.strptime(event['end_datetime'], '%Y-%m-%dT%H:%M:%S%z')
 
         event_details = f"""
         <p><strong>{event['title']}</strong><br>
@@ -18,24 +18,23 @@ def build_calendar_content(calendar_events):
         """
         html_body += event_details
 
-    ical_content = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//MyCal//App//EN\n"
+    ical_content = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Your Organization//Your App//EN\n"
 
     for event in calendar_events:
         ical_event = f"""BEGIN:VEVENT
-            UID:{datetime.datetime.now().strftime('%Y%m%dT%H%M%SZ')}@example.com
-            DTSTAMP:{datetime.datetime.now().strftime('%Y%m%dT%H%M%SZ')}
-            DTSTART:{start_date_time.strftime('%Y%m%dT%H%M%SZ')}
-            DTEND:{end_date_time.strftime('%Y%m%dT%H%M%SZ')}
-            SUMMARY:{event['title']}
-            DESCRIPTION:{event['description']}
-            END:VEVENT
-        """
+UID:{datetime.datetime.now().strftime('%Y%m%dT%H%M%SZ')}@example.com
+DTSTAMP:{datetime.datetime.now().strftime('%Y%m%dT%H%M%SZ')}
+DTSTART:{start_date_time.strftime('%Y%m%dT%H%M%SZ')}
+DTEND:{end_date_time.strftime('%Y%m%dT%H%M%SZ')}
+SUMMARY:{event['title']}
+END:VEVENT
+"""
 
         ical_content += ical_event
 
     ical_content += "END:VCALENDAR\n"
 
-    return ical_content
+    return ical_content, html_body
 
 def build_event(event, event_counter):
     
