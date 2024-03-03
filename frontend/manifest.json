@@ -1,0 +1,15 @@
+{
+    "manifest_version": 3,
+    "name": "CalCU",
+    "version": "1.0",
+    "permissions": ["activeTab"],
+    "action": {
+      "default_popup": "index.html",
+      "default_icon": {
+        "16": "bufflogo.png",
+        "48": "bufflogo.png",
+        "128": "bufflogo.png"
+      }
+    }
+  }
+  
