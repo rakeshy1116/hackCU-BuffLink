@@ -3,6 +3,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
+from email.utils import formataddr
 import datetime
 
 # Sender email
@@ -22,7 +23,7 @@ def send_email_to_user(receiver_email, ical_content, html_body):
     # Email configuration
 
     msg = MIMEMultipart('mixed')
-    msg['From'] = sender_email
+    msg['From'] = formataddr(('BuffLink Team', sender_email))
     msg['To'] = receiver_email
     msg['Subject'] = "Here are your personalized emails!"
 
