@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import json
 from parse_event import *
+from concurrent.futures import ThreadPoolExecutor
 
 
 def parse_page(url,unique_urls):
@@ -40,6 +41,6 @@ unique_urls = set()
 parse_page(start_url, unique_urls)
 
 
-parse_event("https://calendar.colorado.edu/event/international_coffee_hour_1555")
+parse_event("https://calendar.colorado.edu/event/conversations_on_generative_ai_in_education_and_research")
 
 print("Unique URLs:")
