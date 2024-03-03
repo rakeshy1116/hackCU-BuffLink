@@ -1,0 +1,62 @@
+body{
+    margin: 20px;
+    background-color: #C5B783;
+}
+
+h2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#myForm{
+    height: 450px;
+    width: 300px;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+checkbox{
+  margin-right: 10px;
+}
+
+button {
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+  }
+
+  #progress-bar {
+    width: 100%;
+    background-color: transparent;
+    border-radius: 5px;
+  }
+  
+  #progress-image {
+    width: 60px; /* Adjust as needed */
+    height: 40px; /* Adjust as needed */
+  }
+
+  /* #progress-bar div {
+    height: 30px;
+    width: 0;
+    background-color: transparent;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+    animation: progress 0.5s ease-in-out forwards;
+  } */
+
+  .edit-button {
+    display: none;
+  }
+  
+  /* @keyframes progress {
+    to { width: 100%; }
+  } */
+
+  @keyframes progress {
+    0% { left: 0; }
+    100% { left: 90%; }
+  }
