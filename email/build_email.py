@@ -2,13 +2,19 @@ import datetime
 
 def build_calendar_content(calendar_events):
 
+    html_body = "<h1>Upcoming Events</h1>"
+
     for event in calendar_events:
+
+        start_date_time = datetime.strptime(event['start_datetime'], '%Y-%m-%dT%H:%M:%S%z')
+        end_date_time = datetime.strptime(event['end_datetime'], '%Y-%m-%dT%H:%M:%S%z')
+
         event_details = f"""
         <p><strong>{event['title']}</strong><br>
         {event['description']}<br>
         {event['url']}<br>
-        Start: {event['start_datetime'].strftime('%Y-%m-%d %H:%M')}<br>
-        End: {event['end_datetime'].strftime('%Y-%m-%d %H:%M')}</p>
+        Start: {start_date_time.strftime('%Y-%m-%d %H:%M')}<br>
+        End: {end_date_time.strftime('%Y-%m-%d %H:%M')}</p>
         """
         html_body += event_details
 
@@ -18,8 +24,8 @@ def build_calendar_content(calendar_events):
         ical_event = f"""BEGIN:VEVENT
             UID:{datetime.datetime.now().strftime('%Y%m%dT%H%M%SZ')}@example.com
             DTSTAMP:{datetime.datetime.now().strftime('%Y%m%dT%H%M%SZ')}
-            DTSTART:{event['start_datetime'].strftime('%Y%m%dT%H%M%SZ')}
-            DTEND:{event['end_datetime'].strftime('%Y%m%dT%H%M%SZ')}
+            DTSTART:{start_date_time.strftime('%Y%m%dT%H%M%SZ')}
+            DTEND:{end_date_time.strftime('%Y%m%dT%H%M%SZ')}
             SUMMARY:{event['title']}
             DESCRIPTION:{event['description']}
             END:VEVENT
@@ -34,7 +40,7 @@ def build_calendar_content(calendar_events):
 def build_event(event, event_counter):
     
     cur_event = {
-        'summary': "Event " + event_counter,
+        'summary': "Event " + str(event_counter),
         'title': event['title'],
         'description': event['description'],
         'url': event['url'],

@@ -24,15 +24,15 @@ def email_handler(user_email, hash_id_list):
             calendar_events = []
             email_content = None
             event_counter = 1
-            subject = "Here are your personalized events!"
 
             for event in events_list:
                 try:
                     calendar_events.append(build_event(event, event_counter))
                 except:
                     pass
-
+            
             email_content = build_calendar_content(calendar_events)
+            print(email_content)
             
             # if email_content is not None:
             #     send_email_to_user(user_data['emailId'], subject, email_content)
