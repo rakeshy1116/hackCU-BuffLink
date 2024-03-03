@@ -10,12 +10,12 @@ def build_calendar_content(calendar_events):
         end_date_time = datetime.datetime.strptime(event['end_datetime'], '%Y-%m-%dT%H:%M:%S%z')
 
         event_details = f"""
-        <p><strong>{event['title']}</strong><br>
-        {event['description']}<br>
-        {event['url']}<br>
-        Start: {start_date_time.strftime('%Y-%m-%d %H:%M')}<br>
-        End: {end_date_time.strftime('%Y-%m-%d %H:%M')}</p>
-        """
+<p><strong>{event['title']}</strong><br><br>
+{event['description']}<br><br>
+{event['url']}<br><br>
+Start: {start_date_time.strftime('%Y-%m-%d %H:%M')}<br>
+End: {end_date_time.strftime('%Y-%m-%d %H:%M')}</p><br>
+"""
         html_body += event_details
 
     ical_content = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Your Organization//Your App//EN\n"

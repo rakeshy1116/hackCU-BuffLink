@@ -20,7 +20,6 @@ smtp_password = 'oxst rtnw rfkh gjnw'
 def send_email_to_user(receiver_email, ical_content, html_body):
 
     # Email configuration
-    html_body = "<h1>Upcoming Events</h1>"
 
     msg = MIMEMultipart('mixed')
     msg['From'] = sender_email
