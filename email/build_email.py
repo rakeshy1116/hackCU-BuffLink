@@ -21,6 +21,10 @@ End: {end_date_time.strftime('%Y-%m-%d %H:%M')}</p><br>
     ical_content = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Your Organization//Your App//EN\n"
 
     for event in calendar_events:
+
+        start_date_time = datetime.datetime.strptime(event['start_datetime'], '%Y-%m-%dT%H:%M:%S%z')
+        end_date_time = datetime.datetime.strptime(event['end_datetime'], '%Y-%m-%dT%H:%M:%S%z')
+
         ical_event = f"""BEGIN:VEVENT
 UID:{datetime.datetime.now().strftime('%Y%m%dT%H%M%SZ')}@example.com
 DTSTAMP:{datetime.datetime.now().strftime('%Y%m%dT%H%M%SZ')}
