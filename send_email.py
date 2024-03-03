@@ -37,6 +37,7 @@ def send_email_to_user(receiver_email, ical_content, html_body):
     part.add_header('Content-Disposition', 'attachment; filename="events.ics"')
 
     msg.attach(part)
+    print("Successfully sent the email with multiple calendar invites!")
 
     try:
         server = smtplib.SMTP(smtp_server, 587)
@@ -44,6 +45,6 @@ def send_email_to_user(receiver_email, ical_content, html_body):
         server.login(smtp_username, smtp_password)
         server.sendmail(sender_email, receiver_email, msg.as_string())
         server.quit()
-        print("Successfully sent the email with multiple calendar invites!")
+        # print("Successfully sent the email with multiple calendar invites!")
     except Exception as e:
         print(f"Failed to send email: {e}")

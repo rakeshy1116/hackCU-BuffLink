@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         //document.getElementById('output').textContent = JSON.stringify(formData);
 
-        fetch('http://127.0.0.1:5003/', {
+        fetch('http://127.0.0.1:5007/', {
             method: 'POST',
             headers: {
             'Content-Type': 'application/json'
