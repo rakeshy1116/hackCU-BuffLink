@@ -38,8 +38,8 @@ def email_handler(user_email, hash_id_list):
             for event in events_list:
                 try:
                     calendar_events.append(build_event(event, event_counter))
-                except:
-                    pass
+                except (KeyError, TypeError, ValueError) as e:
+                    print(f"Failed to build event: {e}")
             
             email_content, html_body = build_calendar_content(calendar_events)
             

@@ -1,7 +1,8 @@
+import os
 import boto3
 
 # Initialize DynamoDB client
-dynamodb = boto3.client('dynamodb',region_name='us-east-2')
+dynamodb = boto3.client('dynamodb', region_name=os.environ.get('AWS_REGION', 'us-east-2'))
 
 # Define function to put user data into DynamoDB
 def put_user_data(user_name, email, previousMails, extensionPrompts):

@@ -1,3 +1,4 @@
+import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -6,16 +7,16 @@ from email import encoders
 from email.utils import formataddr
 import datetime
 
-# Sender email
-sender_email = 'arkleetcodef22@gmail.com'
+# Sender email - loaded from environment variable
+sender_email = os.environ.get('SENDER_EMAIL', '')
 # SMTP server configuration
 smtp_server = 'smtp.gmail.com'
 # TLS port
-smtp_port = 587  
+smtp_port = 587
 
-# Gmail App Password
+# Gmail App Password - loaded from environment variable
 smtp_username = sender_email
-smtp_password = 'oxst rtnw rfkh gjnw'
+smtp_password = os.environ.get('SMTP_PASSWORD', '')
 
 
 def send_email_to_user(receiver_email, ical_content, html_body):

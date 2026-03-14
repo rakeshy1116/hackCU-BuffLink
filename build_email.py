@@ -1,4 +1,5 @@
 import datetime
+import html
 
 def build_calendar_content(calendar_events):
 
@@ -9,10 +10,13 @@ def build_calendar_content(calendar_events):
         start_date_time = datetime.datetime.strptime(event['start_datetime'], '%Y-%m-%dT%H:%M:%S%z')
         end_date_time = datetime.datetime.strptime(event['end_datetime'], '%Y-%m-%dT%H:%M:%S%z')
 
+        safe_title = html.escape(event['title'])
+        safe_desc = html.escape(event['description'])
+        safe_url = html.escape(event['url'])
         event_details = f"""
-<p><strong>{event['title']}</strong><br><br>
-{event['description']}<br><br>
-{event['url']}<br><br>
+<p><strong>{safe_title}</strong><br><br>
+{safe_desc}<br><br>
+<a href="{safe_url}">{safe_url}</a><br><br>
 Start: {start_date_time.strftime('%Y-%m-%d %H:%M')}<br>
 End: {end_date_time.strftime('%Y-%m-%d %H:%M')}</p><br>
 """

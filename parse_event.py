@@ -41,7 +41,7 @@ def parse_event(url):
 
                 return json_data
             
-            except:
+            except (KeyError, TypeError, ValueError):
                 pass
 
     else:
