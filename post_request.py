@@ -1,5 +1,6 @@
 import os
 import re
+import datetime
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from user_dynamo import *
@@ -99,6 +100,66 @@ def gfg():
     email_handler(email, possible_events)
 
     return jsonify({"status": "ok", "message": "Preferences saved and emails queued"})
+
+
+@app.route('/health', methods=["GET"])
+def health():
+    """Health check endpoint for monitoring and readiness probes."""
+    return jsonify({
+        "status": "healthy",
+        "timestamp": datetime.datetime.utcnow().isoformat() + "Z"
+    })
+
+
+@app.route('/unsubscribe', methods=["GET", "POST"])
+def unsubscribe():
+    """
+    Remove a user from all future email notifications.
+
+    GET  /unsubscribe?email=user@example.com
+    POST /unsubscribe  body: {"email": "user@example.com"}
+    """
+    if request.method == "GET":
+        email = request.args.get('email', '').strip()
+    else:
+        body = request.get_json() or {}
+        email = body.get('email', '').strip()
+
+    if not email or not EMAIL_REGEX.match(email):
+        return jsonify({"error": "A valid email is required"}), 400
+
+    user_data = get_user_data(email)
+    if user_data is None:
+        return jsonify({"error": "Email not found"}), 404
+
+    delete_user(email)
+    return jsonify({"status": "ok", "message": f"{email} has been unsubscribed"})
+
+
+@app.route('/preferences', methods=["GET"])
+def preferences():
+    """
+    Return the stored preferences and email history for a user.
+
+    GET /preferences?email=user@example.com
+    """
+    email = request.args.get('email', '').strip()
+    if not email or not EMAIL_REGEX.match(email):
+        return jsonify({"error": "A valid email is required"}), 400
+
+    user_data = get_user_data(email)
+    if user_data is None:
+        return jsonify({"error": "User not found"}), 404
+
+    prompts = [item.get('S') for item in user_data.get('extensionPrompts', {}).get('L', [])]
+    previous_mails = user_data.get('previousMails', {}).get('L', [])
+
+    return jsonify({
+        "email": email,
+        "name": user_data.get('userName', {}).get('S', ''),
+        "preferences": prompts,
+        "emails_sent_count": len(previous_mails)
+    })
 
 
 if __name__ == '__main__':

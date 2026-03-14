@@ -1,7 +1,10 @@
+import os
 import datetime
 import html
 
-def build_calendar_content(calendar_events):
+_base_url = os.environ.get('API_BASE_URL', 'http://127.0.0.1:5007')
+
+def build_calendar_content(calendar_events, user_email=''):
 
     html_body = "<h1>Upcoming Events</h1>"
 
@@ -41,6 +44,16 @@ END:VEVENT
         ical_content += ical_event
 
     ical_content += "END:VCALENDAR\n"
+
+    # Footer with unsubscribe link
+    if user_email:
+        safe_email = html.escape(user_email)
+        unsubscribe_url = f"{_base_url}/unsubscribe?email={html.escape(user_email)}"
+        html_body += (
+            f'<hr><p style="font-size:12px;color:#888;">'
+            f'You are receiving this because you subscribed as <strong>{safe_email}</strong>. '
+            f'<a href="{unsubscribe_url}">Unsubscribe</a></p>'
+        )
 
     return ical_content, html_body
 

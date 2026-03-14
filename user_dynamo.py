@@ -104,6 +104,19 @@ def get_user_data(emailId):
     except Exception as e:
         print("Error:", e)
 
+def delete_user(emailId):
+    """Remove a user record from the User table (unsubscribe)."""
+    try:
+        dynamodb.delete_item(
+            TableName='User',
+            Key={
+                'emailId': {'S': emailId}
+            }
+        )
+    except Exception as e:
+        print("Error deleting user:", e)
+
+
 # Example usage
 def test():
     user_name = "John Doe"
