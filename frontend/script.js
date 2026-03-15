@@ -37,37 +37,56 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         //document.getElementById('output').textContent = JSON.stringify(formData);
 
-        fetch('http://127.0.0.1:5007/', {
+        var submitButton = document.getElementById('submit-button');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending…';
+
+        var banner = document.getElementById('status-banner');
+        banner.style.display = 'none';
+
+        var apiBase = localStorage.getItem('apiBase') || 'http://127.0.0.1:5007';
+
+        fetch(apiBase + '/', {
             method: 'POST',
             headers: {
-            'Content-Type': 'application/json'
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
         })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch((error) => {
+        .then(function(response) {
+            return response.json().then(function(body) {
+                return { ok: response.ok, body: body };
+            });
+        })
+        .then(function(result) {
+            if (result.ok) {
+                banner.style.background = '#d4edda';
+                banner.style.color = '#155724';
+                banner.style.border = '1px solid #c3e6cb';
+                banner.textContent = '✓ Preferences saved! Matching events will be emailed to you.';
+                banner.style.display = 'block';
+                setTimeout(function() { window.close(); }, 3000);
+            } else {
+                var msg = (result.body && result.body.error) ? result.body.error : 'Something went wrong. Please try again.';
+                showError(banner, submitButton, msg);
+            }
+        })
+        .catch(function(error) {
             console.error('Error:', error);
+            showError(banner, submitButton, 'Could not reach the server. Make sure BuffLink backend is running.');
         });
-
-        var submitButton = document.getElementById('submit-button');
-        var originalButtonHTML = submitButton.outerHTML;
-      
-        // Replace the submit button with the image
-        submitButton.outerHTML = '<img id="progress-image" src="buff.png" />';
-      
-        // Start the animation
-        var progressBar = document.getElementById('progress-image');
-        progressBar.style.position = 'relative';
-        progressBar.style.animation = 'progress 2s linear forwards';
-      
-        // After 2 seconds, replace the image with the original button
-        setTimeout(function() {
-          progressBar.outerHTML = originalButtonHTML;
-          window.close();
-        }, 2000);
     });
 });
+
+function showError(banner, submitButton, message) {
+    banner.style.background = '#f8d7da';
+    banner.style.color = '#721c24';
+    banner.style.border = '1px solid #f5c6cb';
+    banner.textContent = '✗ ' + message;
+    banner.style.display = 'block';
+    submitButton.disabled = false;
+    submitButton.textContent = 'Submit';
+}
 
 function extractCheckBoxData(myItems){
 

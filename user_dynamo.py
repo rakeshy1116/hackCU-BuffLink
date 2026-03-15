@@ -1,7 +1,8 @@
+import os
 import boto3
 
 # Initialize DynamoDB client
-dynamodb = boto3.client('dynamodb',region_name='us-east-2')
+dynamodb = boto3.client('dynamodb', region_name=os.environ.get('AWS_REGION', 'us-east-2'))
 
 # Define function to put user data into DynamoDB
 def put_user_data(user_name, email, previousMails, extensionPrompts):
@@ -102,6 +103,19 @@ def get_user_data(emailId):
     
     except Exception as e:
         print("Error:", e)
+
+def delete_user(emailId):
+    """Remove a user record from the User table (unsubscribe)."""
+    try:
+        dynamodb.delete_item(
+            TableName='User',
+            Key={
+                'emailId': {'S': emailId}
+            }
+        )
+    except Exception as e:
+        print("Error deleting user:", e)
+
 
 # Example usage
 def test():
